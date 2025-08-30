@@ -1,14 +1,195 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Post</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 10px;
+    }
+
+    .post {
+      background: #fff;
+      width: 100%;
+      max-width: 500px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+      margin: 10px auto;
+    }
+
+    .post img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-start;
+      gap: 20px;
+      padding: 15px;
+      flex-wrap: wrap;
+    }
+
+    .actions button {
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.2s;
+    }
+
+    .actions button:hover {
+      transform: scale(1.1);
+    }
+
+    .like-count {
+      font-size: 16px;
+    }
+
+    /* Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .modal-content textarea {
+      width: 100%;
+      height: 100px;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+
+    .modal-content button {
+      padding: 10px 15px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .modal-content button.close {
+      background: #dc3545;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 768px) {
+      .actions {
+        justify-content: space-around;
+      }
+      .actions button {
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .modal-content {
+        padding: 15px;
+      }
+      .modal-content textarea {
+        height: 80px;
+      }
+    }
+  </style>
 </head>
 <body>
-    
+
+  <div class="post">
+    <!-- Replace with your post image -->
+    <img src="./assets/download (1).jpg" alt="Post Image">
+
+    <div class="actions">
+      <button id="likeBtn">❤️ <span id="likeCount">0</span></button>
+      <button id="commentBtn">💬 Comment</button>
+    </div>
+  </div>
+
+  <!-- Comment Modal -->
+  <div class="modal" id="commentModal">
+    <div class="modal-content">
+      <h2>Write a Comment</h2>
+      <textarea placeholder="Type your comment..."></textarea>
+      <div>
+        <button id="postComment">Post</button>
+        <button class="close" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Like functionality
+    const likeBtn = document.getElementById('likeBtn');
+    const likeCount = document.getElementById('likeCount');
+    let likes = 0;
+
+    likeBtn.addEventListener('click', () => {
+      likes++;
+      likeCount.textContent = likes;
+    });
+
+    // Comment modal functionality
+    const commentBtn = document.getElementById('commentBtn');
+    const modal = document.getElementById('commentModal');
+    const closeModal = document.getElementById('closeModal');
+    const postComment = document.getElementById('postComment');
+
+    commentBtn.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    postComment.addEventListener('click', () => {
+      alert("Your comment has been posted!");
+      modal.style.display = 'none';
+    });
+
+    // Close modal if click outside
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
+
 </body>
 </html>

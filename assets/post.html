@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive Social Feed</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .feed {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .post {
+      background: #fff;
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .post img {
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: pointer;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-start;
+      gap: 20px;
+      padding: 15px;
+      flex-wrap: wrap;
+    }
+
+    .actions button {
+      background: none;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: 0.2s;
+    }
+
+    .actions button:hover {
+      transform: scale(1.1);
+    }
+
+    .comments-section {
+      padding: 0 15px 15px;
+    }
+
+    .view-comments {
+      font-size: 14px;
+      color: #007bff;
+      cursor: pointer;
+      margin-bottom: 5px;
+      display: none;
+    }
+
+    .comments {
+      display: none;
+      margin-top: 5px;
+    }
+
+    .comment {
+      background: #f0f0f0;
+      padding: 8px 12px;
+      margin: 5px 0;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    /* Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 20px;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .modal-content textarea {
+      width: 100%;
+      height: 100px;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      resize: none;
+    }
+
+    .modal-content button {
+      padding: 10px 15px;
+      border: none;
+      background: #007bff;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .modal-content button.close {
+      background: #dc3545;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="feed">
+
+    <!-- Post -->
+    <div class="post" data-post="1">
+      <img src="./img-01.jpg" alt="Post 1">
+      <div class="actions">
+        <button class="likeBtn">❤️ <span class="likeCount">0</span></button>
+        <button class="commentBtn">💬 <span class="commentCount">0</span></button>
+      </div>
+      <div class="comments-section">
+        <div class="view-comments">View all <span class="commentCount">0</span> comments</div>
+        <div class="comments"></div>
+      </div>
+    </div>
+
+    <!-- Another Post -->
+    <div class="post" data-post="2">
+      <img src="./img-02.jpg" alt="Post 2">
+      <div class="actions">
+        <button class="likeBtn">❤️ <span class="likeCount">0</span></button>
+        <button class="commentBtn">💬 <span class="commentCount">0</span></button>
+      </div>
+      <div class="comments-section">
+        <div class="view-comments">View all <span class="commentCount">0</span> comments</div>
+        <div class="comments"></div>
+      </div>
+    </div>
+
+    <!-- Another Post -->
+    <div class="post" data-post="2">
+      <img src="./img-03.jpg" alt="Post 2">
+      <div class="actions">
+        <button class="likeBtn">❤️ <span class="likeCount">0</span></button>
+        <button class="commentBtn">💬 <span class="commentCount">0</span></button>
+      </div>
+      <div class="comments-section">
+        <div class="view-comments">View all <span class="commentCount">0</span> comments</div>
+        <div class="comments"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Comment Modal -->
+  <div class="modal" id="commentModal">
+    <div class="modal-content">
+      <h2>Write a Comment</h2>
+      <textarea id="commentText" placeholder="Type your comment..."></textarea>
+      <div>
+        <button id="postComment">Post</button>
+        <button class="close" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Like function
+    function increaseLike(postElement) {
+      let likeBtn = postElement.querySelector('.likeBtn');
+      let countSpan = likeBtn.querySelector('.likeCount');
+      let count = parseInt(countSpan.textContent);
+      count++;
+      countSpan.textContent = count;
+    }
+
+    // Like button click
+    document.querySelectorAll('.likeBtn').forEach(button => {
+      button.addEventListener('click', () => {
+        let post = button.closest('.post');
+        increaseLike(post);
+      });
+    });
+
+    // Image click also increases likes
+    document.querySelectorAll('.post img').forEach(image => {
+      image.addEventListener('click', () => {
+        let post = image.closest('.post');
+        increaseLike(post);
+      });
+    });
+
+    // Comment modal logic
+    const modal = document.getElementById('commentModal');
+    const closeModal = document.getElementById('closeModal');
+    const postComment = document.getElementById('postComment');
+    const commentText = document.getElementById('commentText');
+
+    let currentPost = null;
+
+    // Open modal for new comment when commentBtn is clicked
+    document.querySelectorAll('.commentBtn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        currentPost = e.target.closest('.post');
+        modal.style.display = 'flex';
+      });
+    });
+
+    // Post comment
+    postComment.addEventListener('click', () => {
+      if (commentText.value.trim() !== "") {
+        let commentsDiv = currentPost.querySelector('.comments');
+        let newComment = document.createElement('div');
+        newComment.classList.add('comment');
+        newComment.textContent = commentText.value;
+        commentsDiv.appendChild(newComment);
+
+        // update counts
+        let countSpans = currentPost.querySelectorAll('.commentCount');
+        countSpans.forEach(span => {
+          span.textContent = parseInt(span.textContent) + 1;
+        });
+
+        // show "View all X comments"
+        let viewLink = currentPost.querySelector('.view-comments');
+        viewLink.style.display = 'block';
+      }
+      modal.style.display = 'none';
+      commentText.value = "";
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.style.display = 'none';
+      commentText.value = "";
+    });
+
+    // View all comments toggle
+    document.querySelectorAll('.view-comments').forEach(link => {
+      link.addEventListener('click', (e) => {
+        const post = e.target.closest('.post');
+        const commentsDiv = post.querySelector('.comments');
+        commentsDiv.style.display = commentsDiv.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        commentText.value = "";
+      }
+    });
+  </script>
+
+</body>
+
+</html>
